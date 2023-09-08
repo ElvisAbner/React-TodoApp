@@ -1,9 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ToDoItem from "./ToDoItem";
 import InputArea from "./InputArea";
 
 function App() {
   const [items, setItems] = useState([]);
+
+  // Load items from localStorage when the component mounts
+  useEffect(() => {
+    const storedItems = localStorage.getItem("todoItems");
+    if (storedItems) {
+      setItems(JSON.parse(storedItems));
+    }
+  }, []);
+
+  // Save items to localStorage whenever the 'items' state changes
+  useEffect(() => {
+    localStorage.setItem("todoItems", JSON.stringify(items));
+  }, [items]);
 
   function addItem(inputText) {
     setItems((prevItems) => {
